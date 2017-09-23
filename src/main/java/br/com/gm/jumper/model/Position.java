@@ -15,4 +15,9 @@ public class Position implements BoardSquare{
 	this.xyAxis = xyAxis;
     }
 
+    @Override
+    public String getLocation() {
+	return this.xyAxis.getLocation();
+    }
+
 }

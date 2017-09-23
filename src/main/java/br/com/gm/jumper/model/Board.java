@@ -16,6 +16,7 @@ public class Board {
     private int size;
 
     private Set<BoardSquare> xyAxisSet;
+    private Jumper jumper;
 
     public Board(int size) throws BoardSizeException{
 	super();
@@ -38,12 +39,17 @@ public class Board {
 	if(!xyAxisSet.contains(jumper.getInitialPosition()) ||
 		!xyAxisSet.contains(jumper.getFinalPosition()))
 	    throw new JumperPositionInvalidException();
+	this.jumper = jumper;
+    }
+    
+    private <T extends Position> void updateXYAxisSet(T object){
+	this.xyAxisSet.remove(object.getXyAxis());
+	this.xyAxisSet.add(object);
     }
 
     public void addStone(Stone stone){
 	if(xyAxisSet.contains(stone.getXyAxis())){
-	    xyAxisSet.remove(stone.getXyAxis());
-	    xyAxisSet.add(stone);
+	    updateXYAxisSet(stone);
 	}
     }
 }

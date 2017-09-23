@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.com.gm.jumper.util.InputProperties;
 import br.com.gm.jumper.util.PropertiesKey;

@@ -1,8 +1,10 @@
 package br.com.gm.jumper.model;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.gm.jumper.exceptions.BoardSizeException;
+import br.com.gm.jumper.exceptions.InvalidPositionException;
 
 public class BoardTest {
 
@@ -21,7 +23,6 @@ public class BoardTest {
 	new Board(101);
     }
     
-    
     @Test 
     public void mustCreateBoardWithSizeEqualsOne() throws BoardSizeException {
 	new Board(1);
@@ -30,6 +31,22 @@ public class BoardTest {
     @Test
     public void mustCreateBoardWithSizeEqualsOneHundred() throws BoardSizeException{
 	new Board(100);
+    }
+    
+    @Test
+    public void mustAddStoneOnBoard() throws InvalidPositionException, BoardSizeException{
+	Stone stone = new Stone(new XYAxis(1, 1));
+	 Board board = new Board(1);
+	 board.addStone(stone);
+	 Assert.assertTrue(board.getXyAxisSet().contains(stone));
+    }
+    
+    @Test
+    public void mustNotAddStoneOnBoard() throws InvalidPositionException, BoardSizeException{
+	Stone stone = new Stone(new XYAxis(3, 1));
+	 Board board = new Board(1);
+	 board.addStone(stone);
+	 Assert.assertFalse(board.getXyAxisSet().contains(stone));
     }
     
 }

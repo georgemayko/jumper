@@ -17,7 +17,7 @@ public class Jumper {
 
     @Setter
     private Position actualPosition;
-    
+
     public Jumper(Position initialPosition, Position finalPosition,Move... moves) throws NoMovesException {
 	super();
 	this.initialPosition = initialPosition;
@@ -27,6 +27,18 @@ public class Jumper {
 	    throw new NoMovesException();
 	this.moves = new HashSet<Move>(Arrays.asList(moves));
     }
-   
     
+    public Set<XYAxis> getPossibleMoves(){
+	Set<XYAxis> xyAxis = new HashSet<XYAxis>();
+	this.moves.forEach(move ->{
+	    xyAxis.add(getNew(this.getActualPosition(), move));
+	});
+	return xyAxis;
+    }
+
+    private XYAxis getNew(Position position, Move move){
+	XYAxis xyAxis = position.getXyAxis();
+	return new XYAxis(xyAxis.getXAxis()+move.getXAxis(), xyAxis.getYAxis()+ move.getYAxis());
+    }
+
 }
