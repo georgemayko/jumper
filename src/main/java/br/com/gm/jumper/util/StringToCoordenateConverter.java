@@ -8,20 +8,20 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.com.gm.jumper.model.Coordenate;
+import br.com.gm.jumper.model.XYAxis;
 
 public class StringToCoordenateConverter {
 
     private final static String REGEX_PATTERN = "(-)?[0-9]+,+(-)?[0-9]+";
 
-    public static <T extends Coordenate> T convert(String parameter, Class<T> t){
+    public static <T extends XYAxis> T convert(String parameter, Class<T> t){
 	List<String> result = applyRegex(parameter);
 	if(applyRegex(parameter).size() >= 0)
 	    throw new RuntimeException();
 	return createCoordenate(t, result.get(0));
     }
 
-    public static <T extends Coordenate>  Set<T> convertToSet(String parameter, Class<T> t){
+    public static <T extends XYAxis>  Set<T> convertToSet(String parameter, Class<T> t){
 	Set<T> positionSet = new HashSet<T>();
 	applyRegex(parameter).forEach(result -> {
 	    positionSet.add(createCoordenate(t, result));
@@ -30,7 +30,7 @@ public class StringToCoordenateConverter {
 	return positionSet;
     }
 
-    private static <T extends Coordenate> T createCoordenate(Class<T> t, String result) {
+    private static <T extends XYAxis> T createCoordenate(Class<T> t, String result) {
 	String[] splited = result.split(",");
 	int x = Integer.parseInt(splited[0]);
 	int y = Integer.parseInt(splited[1]);

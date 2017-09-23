@@ -14,21 +14,21 @@ public class Board {
     
     private int size;
     
-    private Set<Coordenate> coordenateList;
+    private Set<XYAxis> coordenateList;
     
     public Board(int size) throws BoardSizeException{
 	super();
 	if(size < minSize || size > maxSize)
 	    throw new BoardSizeException();
 	this.size = size;
-	this.coordenateList = new HashSet<Coordenate>();
+	this.coordenateList = new HashSet<XYAxis>();
 	createCoordenatesOfTheBoard();
     }
     
     private void createCoordenatesOfTheBoard() {
 	for(int x = minSize; x <= size; x++){
 	    for(int y = minSize; y<= size; y++){
-		coordenateList.add(new Coordenate(x, y));
+		coordenateList.add(new XYAxis(x, y));
 	    }
 	}
     }

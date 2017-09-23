@@ -1,8 +1,12 @@
 package br.com.gm.jumper.model;
 
-public class Position extends Coordenate{
+import br.com.gm.jumper.exception.InvalidPositionException;
 
-    public Position(int x, int y) {
+public class Position extends XYAxis{
+
+    public Position(int x, int y) throws InvalidPositionException {
 	super(x, y);
+	if(x < 0 || y < 0)
+	    throw new InvalidPositionException();
     }
 }
