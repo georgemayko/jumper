@@ -9,31 +9,26 @@ import lombok.Getter;
 @Getter
 public class Board {
     
-    private final int minHeight = 1;
-    private final int minWidth = 1;
-    private int maxHeight;
-    private int maxWidth;
+    private final int minSize = 1;
+    private int maxSize = 100;
+    
+    private int size;
     
     private Set<Coordenate> coordenateList;
     
-    public Board(int maxHeight, int maxWidth) throws BoardSizeException {
+    public Board(int size) throws BoardSizeException{
 	super();
-	if(maxHeight < minHeight || maxWidth < minWidth)
+	if(size < minSize || size > maxSize)
 	    throw new BoardSizeException();
-	this.maxHeight = maxHeight;
-	this.maxWidth = maxWidth;
+	this.size = size;
 	this.coordenateList = new HashSet<Coordenate>();
 	createCoordenatesOfTheBoard();
     }
     
-    public Board(int size) throws BoardSizeException{
-	new Board(size, size);
-    }
-    
     private void createCoordenatesOfTheBoard() {
-	for(int width = minWidth; width<= maxWidth; width++){
-	    for(int height = minHeight; height<= maxHeight; height++){
-		coordenateList.add(new Coordenate(width, height));
+	for(int x = minSize; x <= size; x++){
+	    for(int y = minSize; y<= size; y++){
+		coordenateList.add(new Coordenate(x, y));
 	    }
 	}
     }

@@ -6,35 +6,30 @@ import br.com.gm.jumper.exceptions.BoardSizeException;
 
 public class BoardTest {
 
-    
     @Test(expected = BoardSizeException.class)
-    public void mustNotCreateBoardWithNegativeWidth() throws BoardSizeException{
-	new Board(5, -1);
+    public void mustNotCreateBoardWithNegativeSize() throws BoardSizeException{
+	new Board(-1);
     }
     
     @Test(expected = BoardSizeException.class)
-    public void mustNotCreateBoardWithNegativeHeight() throws BoardSizeException{
-	new Board(-1, 2);
+    public void mustNotCreateBoardWithSizeZero() throws BoardSizeException{
+	new Board(0);
     }
     
     @Test(expected = BoardSizeException.class)
-    public void mustNotCreateBoardWithWidthZero() throws BoardSizeException{
-	new Board(5, 0);
-    }
-    
-    @Test(expected = BoardSizeException.class)
-    public void mustNotCreateBoardWithHeightZero() throws BoardSizeException{
-	new Board(0, 10);
+    public void mustNotCreateBoardWithSizeBiggerThanOneHundred() throws BoardSizeException{
+	new Board(101);
     }
     
     
     @Test 
-    public void mustCreateBoardWithWidthAndHeightEqualsOne() throws BoardSizeException {
-	new Board(1, 1);
+    public void mustCreateBoardWithSizeEqualsOne() throws BoardSizeException {
+	new Board(1);
     }
     
     @Test
-    public void mustCreateBoardWithWidthAndHeightEqualsBiggerThanOne() throws BoardSizeException{
-	new Board(5, 2);
+    public void mustCreateBoardWithSizeEqualsOneHundred() throws BoardSizeException{
+	new Board(100);
     }
+    
 }
