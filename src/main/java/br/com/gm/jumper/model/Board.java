@@ -32,4 +32,12 @@ public class Board {
 	    }
 	}
     }
+    
+    public void addJumper(Jumper jumper){
+	//if(jumper.getActualPosition())
+    }
+    
+    public void addStone(Stone stone){
+	
+    }
 }
