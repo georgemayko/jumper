@@ -1,4 +1,4 @@
-package br.com.gm.jumper.exception;
+package br.com.gm.jumper.exceptions;
 
 public class InvalidPositionException extends Exception {
 

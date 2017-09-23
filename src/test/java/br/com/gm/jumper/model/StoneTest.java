@@ -3,7 +3,7 @@ package br.com.gm.jumper.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.com.gm.jumper.exception.InvalidPositionException;
+import br.com.gm.jumper.exceptions.InvalidPositionException;
 
 public class StoneTest {
     

@@ -3,6 +3,8 @@ package br.com.gm.jumper.model;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import br.com.gm.jumper.exceptions.NoMovesException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,15 +18,15 @@ public class Jumper {
     @Setter
     private Position actualPosition;
     
-    public Jumper(Position initialPosition, Position finalPosition) {
+    public Jumper(Position initialPosition, Position finalPosition,Move... moves) throws NoMovesException {
 	super();
 	this.initialPosition = initialPosition;
 	this.finalPosition = finalPosition;
 	this.actualPosition = initialPosition;
-    }
-    
-    public void setMoves(Move... moves){
+	if(moves.length == 0)
+	    throw new NoMovesException();
 	this.moves = new HashSet<Move>(Arrays.asList(moves));
     }
+   
     
 }

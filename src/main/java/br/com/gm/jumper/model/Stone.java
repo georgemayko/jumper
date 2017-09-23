@@ -1,6 +1,6 @@
 package br.com.gm.jumper.model;
 
-import br.com.gm.jumper.exception.InvalidPositionException;
+import br.com.gm.jumper.exceptions.InvalidPositionException;
 
 public class Stone extends Position {
 
