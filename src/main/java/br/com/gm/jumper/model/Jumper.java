@@ -4,41 +4,42 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import br.com.gm.jumper.exceptions.InvalidPositionException;
 import br.com.gm.jumper.exceptions.NoMovesException;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class Jumper {
+public class Jumper{
 
-    private Position initialPosition;
-    private Position finalPosition;
     private Set<Move> moves;
 
     @Setter
     private Position actualPosition;
-
-    public Jumper(Position initialPosition, Position finalPosition,Move... moves) throws NoMovesException {
+    
+    public Jumper(Position initialPosition, Move... moves) throws NoMovesException {
 	super();
-	this.initialPosition = initialPosition;
-	this.finalPosition = finalPosition;
 	this.actualPosition = initialPosition;
 	if(moves.length == 0)
 	    throw new NoMovesException();
 	this.moves = new HashSet<Move>(Arrays.asList(moves));
     }
     
-    public Set<XYAxis> getPossibleMoves(){
-	Set<XYAxis> xyAxis = new HashSet<XYAxis>();
+    public Set<Position> getPossiblePositionMoves(Board board){
+	Set<Position> positionSet = new HashSet<Position>();
 	this.moves.forEach(move ->{
-	    xyAxis.add(getNew(this.getActualPosition(), move));
+	    try{
+		Position position = getNew(actualPosition, move);
+		if(board.isValidPositionForMove(position))
+			positionSet.add(position);
+	    }catch( InvalidPositionException e){   }
 	});
-	return xyAxis;
+	return positionSet;
     }
 
-    private XYAxis getNew(Position position, Move move){
+    private Position getNew(Position position, Move move) throws InvalidPositionException{
 	XYAxis xyAxis = position.getXyAxis();
-	return new XYAxis(xyAxis.getXAxis()+move.getXAxis(), xyAxis.getYAxis()+ move.getYAxis());
+	return new Position(new XYAxis(xyAxis.getXAxis()+ move.getXAxis(), xyAxis.getYAxis() + move.getYAxis()));
     }
-
+    
 }

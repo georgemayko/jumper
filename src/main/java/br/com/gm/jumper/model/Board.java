@@ -1,7 +1,7 @@
 package br.com.gm.jumper.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.com.gm.jumper.exceptions.BoardSizeException;
 import br.com.gm.jumper.exceptions.JumperPositionInvalidException;
@@ -15,7 +15,7 @@ public class Board {
 
     private int size;
 
-    private Set<BoardSquare> xyAxisSet;
+    private Map<XYAxis, BoardSquare> xyAxisMap;
     private Jumper jumper;
 
     public Board(int size) throws BoardSizeException{
@@ -23,33 +23,42 @@ public class Board {
 	if(size < minSize || size > maxSize)
 	    throw new BoardSizeException();
 	this.size = size;
-	this.xyAxisSet = new HashSet<BoardSquare>();
-	createCoordenatesOfTheBoard();
+	this.xyAxisMap = new HashMap<XYAxis,BoardSquare>();
+	createXYAxisOfTheBoard();
     }
 
-    private void createCoordenatesOfTheBoard() {
+    private void createXYAxisOfTheBoard() {
 	for(int x = minSize; x <= size; x++){
 	    for(int y = minSize; y<= size; y++){
-		xyAxisSet.add(new XYAxis(x, y));
+		XYAxis xyAxis = new XYAxis(x, y);
+		xyAxisMap.put(xyAxis, xyAxis);
 	    }
 	}
     }
 
     public void addJumper(Jumper jumper) throws JumperPositionInvalidException{
-	if(!xyAxisSet.contains(jumper.getInitialPosition()) ||
-		!xyAxisSet.contains(jumper.getFinalPosition()))
+	if(!xyAxisMap.containsKey(jumper.getActualPosition().getXyAxis())
+		|| xyAxisMap.get(jumper.getActualPosition().getXyAxis()) instanceof Stone)
 	    throw new JumperPositionInvalidException();
 	this.jumper = jumper;
+	this.updateXYAxisSet(jumper.getActualPosition());
     }
     
     private <T extends Position> void updateXYAxisSet(T object){
-	this.xyAxisSet.remove(object.getXyAxis());
-	this.xyAxisSet.add(object);
+	this.xyAxisMap.put(object.getXyAxis(), object);
     }
 
     public void addStone(Stone stone){
-	if(xyAxisSet.contains(stone.getXyAxis())){
+	if(xyAxisMap.containsKey(stone.getXyAxis())){
 	    updateXYAxisSet(stone);
 	}
     }
+
+    public boolean isValidPositionForMove(Position position) {
+	if(!xyAxisMap.containsKey(position.getXyAxis())
+		|| xyAxisMap.get(position.getXyAxis()) instanceof Position)
+	    return false;
+	return true;
+    }
+    
 }
