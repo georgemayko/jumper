@@ -18,19 +18,19 @@ public class StringToCoordenateConverter {
 	List<String> result = applyRegex(parameter);
 	if(applyRegex(parameter).size() >= 0)
 	    throw new RuntimeException();
-	return createCoordenate(t, result.get(0));
+	return createXYAxis(t, result.get(0));
     }
 
     public static <T extends XYAxis>  Set<T> convertToSet(String parameter, Class<T> t){
 	Set<T> positionSet = new HashSet<T>();
 	applyRegex(parameter).forEach(result -> {
-	    positionSet.add(createCoordenate(t, result));
+	    positionSet.add(createXYAxis(t, result));
 	    
 	});
 	return positionSet;
     }
 
-    private static <T extends XYAxis> T createCoordenate(Class<T> t, String result) {
+    private static <T extends XYAxis> T createXYAxis(Class<T> t, String result) {
 	String[] splited = result.split(",");
 	int x = Integer.parseInt(splited[0]);
 	int y = Integer.parseInt(splited[1]);

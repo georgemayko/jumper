@@ -10,11 +10,11 @@ public class JumperTest {
     
     @Test(expected=NoMovesException.class)
     public void mustNotCreateAJumperWithNoMoves() throws InvalidPositionException, NoMovesException{
-	new Jumper(new Position(1, 1), new Position(1, 1));
+	new Jumper(new Position(new XYAxis(1, 1)), new Position(new XYAxis(1, 1)));
     }
     
     public void mustCreateAJumperWithOneMove() throws InvalidPositionException, NoMovesException, InvalidMoveException{
-	new Jumper(new Position(1, 1), new Position(1, 1), new Move(1, 2));
+	new Jumper(new Position(new XYAxis(1, 1)), new Position(new XYAxis(1, 1)), new Move(1, 2));
     }
     
 }

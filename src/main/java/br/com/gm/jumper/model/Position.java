@@ -1,12 +1,18 @@
 package br.com.gm.jumper.model;
 
 import br.com.gm.jumper.exceptions.InvalidPositionException;
+import lombok.Getter;
 
-public class Position extends XYAxis{
+@Getter
+public class Position implements BoardSquare{
+    
+    private XYAxis xyAxis;
 
-    public Position(int x, int y) throws InvalidPositionException {
-	super(x, y);
-	if(x < 0 || y < 0)
+    public Position(XYAxis xyAxis) throws InvalidPositionException {
+	super();
+	if(xyAxis.getXAxis() < 0 || xyAxis.getYAxis() < 0)
 	    throw new InvalidPositionException();
+	this.xyAxis = xyAxis;
     }
+
 }

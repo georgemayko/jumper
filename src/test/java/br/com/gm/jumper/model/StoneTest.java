@@ -10,21 +10,21 @@ public class StoneTest {
     
     @Test(expected=InvalidPositionException.class)
     public void mustNotCreateAStoneWithXAxisNegative() throws InvalidPositionException{
-	new Stone(-1, 10);
+	new Stone(new XYAxis(-1, 10));
     }
     
     @Test(expected=InvalidPositionException.class)
     public void mustNotCreateAStoneWithYAxisNegative() throws InvalidPositionException{
-	new Stone(20, -1);
+	new Stone(new XYAxis(20, -1));
     }
     
     @Test(expected=InvalidPositionException.class)
     public void mustNotCreateAStoneWithXAndYAxisNegative() throws InvalidPositionException{
-	new Stone(-1, -10);
+	new Stone(new XYAxis(-1, -10));
     }
     
     public void mustCreateAStoneWithYAxisPositive() throws InvalidPositionException{
-	Assert.assertNotNull(new Stone(0, 1));
+	Assert.assertNotNull(new Stone(new XYAxis(0, 1)));
     }
     
     
