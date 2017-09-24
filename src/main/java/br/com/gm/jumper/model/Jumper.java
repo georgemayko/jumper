@@ -25,6 +25,11 @@ public class Jumper{
 	this.moves = new HashSet<Move>(Arrays.asList(moves));
     }
     
+    public Jumper(Position initialPosition, Jumper jumper){
+	this.moves = jumper.getMoves();
+	this.actualPosition = initialPosition;
+    }
+    
     public Set<Position> getPossiblePositionMoves(Board board){
 	Set<Position> positionSet = new HashSet<Position>();
 	this.moves.forEach(move ->{
