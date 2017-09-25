@@ -1,22 +1,29 @@
 package br.com.gm.jumper.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Result {
 
-    private int numberOfSteps;
-    private int numberOfPaths;
+    @Setter
+    private int numberOfSteps = 0;
     private List<String> paths;
     
-    public Result(int numberOfSteps,int numberOfPaths, String... paths) {
+    public Result(){
 	super();
-	this.numberOfSteps = numberOfSteps;
-	this.numberOfPaths = numberOfPaths;
-	this.paths = Arrays.asList(paths);
+	this.paths = new ArrayList<String>();
+    }
+    
+    public void addPath(String path){
+	this.paths.add(path);
+    }
+    
+    public int getNumberOfPaths(){
+	return this.paths.size();
     }
     
     

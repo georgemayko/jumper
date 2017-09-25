@@ -41,6 +41,4 @@ public class Position implements BoardSquare{
 	return HashCodeBuilder.reflectionHashCode(this);
     }
 
-
-
 }
