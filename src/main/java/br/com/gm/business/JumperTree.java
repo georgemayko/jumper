@@ -30,8 +30,6 @@ public class JumperTree {
 		if( parent.getParent() != null &&
 			!parent.getParent().getPosition().equals(positionNode)){		    
 		    parent.addChildNode(new Node(positionNode));
-		    //		    if(positionNode.equals(this.endPosition))
-		    //			this.endPositionFinded = Boolean.TRUE;
 		}
 	    });
 	}

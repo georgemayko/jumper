@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import br.com.gm.jumper.exceptions.InvalidPositionException;
 import br.com.gm.jumper.exceptions.JumperPositionInvalidException;
 import br.com.gm.jumper.exceptions.NoMovesException;
 import br.com.gm.jumper.model.Board;
 import br.com.gm.jumper.model.Jumper;
 import br.com.gm.jumper.model.Position;
+import br.com.gm.jumper.model.Stone;
 
 public class PathFinder {
 
@@ -66,7 +68,10 @@ public class PathFinder {
 
     private JumperTree b (Board board, Position endPosition, List<Position> positions, JumperTree tree){
 	System.out.println("Start filter:("+positions.size()+")\t" +GregorianCalendar.getInstance().getTime());
-	if(positions.stream().filter(p -> p.equals(endPosition)).count() > 0){
+	if( positions.isEmpty()){
+	    return new JumperTree(new Node(endPosition));
+	}
+	if( positions.stream().filter(p -> p.equals(endPosition)).count() > 0){
 	    System.out.println("Start finished: \t" +GregorianCalendar.getInstance().getTime());
 	    return tree;
 	}else{
@@ -77,6 +82,9 @@ public class PathFinder {
 		.forEach(newPosition -> {
 		    positionsToProcess.add(newPosition);
 		    tree.addNode(position, newPosition);
+		    try{
+			board.addStone(new Stone(position.getXyAxis()));
+		    } catch(InvalidPositionException e){ }
 		});
 	    });
 	    return this.b(board, endPosition, new ArrayList<Position>(positionsToProcess), tree);
