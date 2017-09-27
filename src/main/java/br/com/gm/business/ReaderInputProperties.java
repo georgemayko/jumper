@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import br.com.gm.business.excepction.InputInvalidException;
+import br.com.gm.jumper.exceptions.InputInvalidException;
 import br.com.gm.jumper.util.InputProperties;
 import br.com.gm.jumper.util.PropertiesKey;
 

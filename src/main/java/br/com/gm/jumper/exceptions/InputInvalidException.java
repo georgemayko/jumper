@@ -1,4 +1,4 @@
-package br.com.gm.business.excepction;
+package br.com.gm.jumper.exceptions;
 
 import br.com.gm.jumper.util.PropertiesKey;
 
