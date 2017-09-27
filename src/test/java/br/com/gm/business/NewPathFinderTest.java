@@ -98,4 +98,18 @@ public class NewPathFinderTest {
     }
     
     
+    
+    @Test
+    public void d() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
+	Board board = new Board(20);
+	Jumper jumper = new Jumper(new Position(new XYAxis(20,20)), horseChessMoves);
+	board.addJumper(jumper);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
+	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
+	Assert.assertEquals(0, result.getNumberOfSteps());
+	Assert.assertEquals(0, result.getNumberOfPaths());
+    }
+    
+    
+    
 }
