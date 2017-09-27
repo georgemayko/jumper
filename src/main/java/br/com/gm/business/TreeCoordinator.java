@@ -21,12 +21,9 @@ public class TreeCoordinator {
     public void joinTrees(Collection<Position> collection){
 	if(!tail.getRoot().getChildNodes().isEmpty()){
 	    collection.forEach(position -> {
-		System.out.println("INTERSEÇÃO: " + position.getLocation());
 		for (Node node : tail.findNodeWithPosition(tail.getRoot().getChildNodes(), position)) {
 		    Node actualNode = node;
 		    while (actualNode.getParent()  != null){
-			System.out.println("PAI :" + actualNode.getPosition().getLocation());
-			System.out.println("FILHO :" + actualNode.getParent().getPosition().getLocation());
 			header.addNode(actualNode.getPosition(), actualNode.getParent().getPosition());
 			actualNode = actualNode.getParent();
 		    }   

@@ -34,12 +34,11 @@ public class PathFinder {
     //    }
 
 
-    public JumperTree findShortestPathJumperTree( Jumper jumper, Position endPosition, Board board) throws NoMovesException, JumperPositionInvalidException{
-	board.addJumper(jumper);
-	JumperTree tree = new JumperTree(new Node(jumper.getActualPosition()));
+    public JumperTree findShortestPathJumperTree(Position endPosition, Board board) throws NoMovesException, JumperPositionInvalidException{
+	JumperTree tree = new JumperTree(new Node(board.getJumper().getActualPosition()));
 	if(!board.isValidPositionForMove(endPosition))
 	    return tree; 
-	return d(board, endPosition, jumper.getActualPosition());
+	return findShortestPathUsingTreeCoordinator(board, endPosition, board.getJumper().getActualPosition());
     }
 
 
@@ -71,10 +70,10 @@ public class PathFinder {
     }
      */
 
-    private JumperTree d(Board board, Position endPosition, Position actualPosition) {
+    private JumperTree findShortestPathUsingTreeCoordinator(Board board, Position endPosition, Position actualPosition) {
 	try{
 	    TreeCoordinator treeCoordinator = new TreeCoordinator(new JumperTree(new Node(actualPosition)), new JumperTree(new Node(endPosition)));
-	    return c(board, Arrays.asList(endPosition), Arrays.asList(actualPosition),treeCoordinator);
+	    return mountJumperTree(board, Arrays.asList(endPosition), Arrays.asList(actualPosition),treeCoordinator);
 	}catch(NoMovesException e){
 	    return new JumperTree(new Node(endPosition));
 	}
@@ -82,25 +81,21 @@ public class PathFinder {
 
 
 
-    private JumperTree c (Board board, List<Position> endPosition, List<Position> positions, TreeCoordinator treeCoordinator) throws NoMovesException{
-	System.out.println("Start filter:("+positions.size()+")("+endPosition.size()+")\t" +GregorianCalendar.getInstance().getTime());
+    private JumperTree mountJumperTree (Board board, List<Position> endPosition, List<Position> positions, TreeCoordinator treeCoordinator) throws NoMovesException{
 	if( positions.isEmpty() || endPosition.isEmpty()){
 	    throw new NoMovesException();
 	}
 	if(!Collections.disjoint(positions, endPosition)){
-	    System.out.println("Start finished: \t" +GregorianCalendar.getInstance().getTime());
 	    treeCoordinator.joinTrees(CollectionUtils.intersection(positions, endPosition));
 	    return treeCoordinator.getFullTree();
 	}else{
-	    System.out.println("More step:\t" +GregorianCalendar.getInstance().getTime());
-
 	    if(positions.size() <= endPosition.size()){
 		List<Position> positionsToProcess = getNewPositionsToProcess(board, positions, treeCoordinator.getHeader(),true);
-		return this.c(board, endPosition, positionsToProcess, treeCoordinator);
+		return this.mountJumperTree(board, endPosition, positionsToProcess, treeCoordinator);
 	    }
 	    else{
 		List<Position> positionsToProcess = getNewPositionsToProcess(board, endPosition, treeCoordinator.getTail(), false);
-		return this.c(board, positionsToProcess, positions, treeCoordinator);
+		return this.mountJumperTree(board, positionsToProcess, positions, treeCoordinator);
 	    }
 	}
     }
@@ -125,15 +120,12 @@ public class PathFinder {
     }
 
     private JumperTree b (Board board, Position endPosition, List<Position> positions, JumperTree tree){
-	System.out.println("Start filter:("+positions.size()+")\t" +GregorianCalendar.getInstance().getTime());
 	if( positions.isEmpty()){
 	    return new JumperTree(new Node(endPosition));
 	}
 	if( positions.stream().filter(p -> p.equals(endPosition)).count() > 0){
-	    System.out.println("Start finished: \t" +GregorianCalendar.getInstance().getTime());
 	    return tree;
 	}else{
-	    System.out.println("More step:\t" +GregorianCalendar.getInstance().getTime());
 	    Set<Position> positionsToProcess = new HashSet<Position>();
 	    positions.forEach(position ->{
 		new Jumper(position, board.getJumper()).getPossiblePositionMoves(board)

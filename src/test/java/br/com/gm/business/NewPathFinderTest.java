@@ -32,7 +32,7 @@ public class NewPathFinderTest {
 	Jumper jumper = new Jumper(new Position(new XYAxis(1,1)), horseChessMoves);
 	board.addJumper(jumper);
 	
-	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(new Position(new XYAxis(1, 1)), board);
 	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
 	Assert.assertEquals(0, result.getNumberOfSteps());
 	Assert.assertEquals(0, result.getNumberOfPaths());
@@ -44,7 +44,7 @@ public class NewPathFinderTest {
 	Jumper jumper = new Jumper(new Position(new XYAxis(1,1)), horseChessMoves);
 	board.addJumper(jumper);
 	
-	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(2, 3)), board);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(new Position(new XYAxis(2, 3)), board);
 	Result result = tree.getResult(new Position(new XYAxis(2, 3)));
 	Assert.assertEquals(1, result.getNumberOfSteps());
 	Assert.assertEquals(1, result.getNumberOfPaths());
@@ -55,7 +55,7 @@ public class NewPathFinderTest {
 	Board board = new Board(4);
 	Jumper jumper = new Jumper(new Position(new XYAxis(4,4)), horseChessMoves);
 	board.addJumper(jumper);
-	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(new Position(new XYAxis(1, 1)), board);
 	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
 	Assert.assertEquals(2, result.getNumberOfSteps());
 	Assert.assertEquals(2, result.getNumberOfPaths());
@@ -76,7 +76,7 @@ public class NewPathFinderTest {
 	board.addStone(new Stone(new XYAxis(1,5)));
 	board.addStone(new Stone(new XYAxis(4,5)));
 	
-	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(new Position(new XYAxis(1, 1)), board);
 	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
 	Assert.assertEquals(5, result.getNumberOfSteps());
 	Assert.assertEquals(3, result.getNumberOfPaths());
@@ -90,7 +90,7 @@ public class NewPathFinderTest {
 	board.addJumper(jumper);
 	board.addStone(new Stone(new XYAxis(1,3)));
 	board.addStone(new Stone(new XYAxis(3,3)));
-	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(2, 1)), board);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(new Position(new XYAxis(2, 1)), board);
 	Result result = tree.getResult(new Position(new XYAxis(2, 1)));
 	Assert.assertEquals(0, result.getNumberOfSteps());
 	Assert.assertEquals(0, result.getNumberOfPaths());
@@ -116,7 +116,7 @@ public class NewPathFinderTest {
 	Jumper jumper = new Jumper(new Position(new XYAxis(1,8)), horseChessMoves);
 	board.addJumper(jumper);
 	board.addStone(new Stone(new XYAxis(1, 1)));
-	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
+	JumperTree tree = new PathFinder().findShortestPathJumperTree(new Position(new XYAxis(1, 1)), board);
 	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
 	Assert.assertEquals(0, result.getNumberOfSteps());
 	Assert.assertEquals(0, result.getNumberOfPaths()); 

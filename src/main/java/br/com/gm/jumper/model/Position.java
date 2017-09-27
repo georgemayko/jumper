@@ -14,7 +14,7 @@ public class Position implements BoardSquare{
     public Position(XYAxis xyAxis) throws InvalidPositionException {
 	super();
 	if(xyAxis.getXAxis() < 0 || xyAxis.getYAxis() < 0)
-	    throw new InvalidPositionException();
+	    throw new InvalidPositionException(xyAxis.getLocation());
 	this.xyAxis = xyAxis;
     }
 

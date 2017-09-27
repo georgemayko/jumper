@@ -24,19 +24,11 @@ public class JumperTree {
 	    root.addChildNode(new Node(positionNode));
 	}else{
 	    Set<Node> nodesParent = findNodeWithPosition(root.getChildNodes(), positionParent);
-	    System.out.println("----Encontrado PAI"+ nodesParent.size());
 	    nodesParent.forEach(parent -> {
 		if( parent.getParent() != null &&
 			!parent.getParent().getPosition().equals(positionNode)){
 		    parent.addChildNode(new Node(positionNode));
 		}
-		else{
-		    System.out.println("Não encontrado!");
-		    System.out.println(positionParent.getLocation());
-		    System.out.println(positionNode.getLocation());
-		    
-		}
-		
 	    });
 	}
     }
@@ -65,26 +57,9 @@ public class JumperTree {
 		    sb.insert(0, parent.getPosition().getLocation());
 		    parent = parent.getParent();
 		}
-		System.out.println(sb.toString());
 		result.addPath(sb.toString());
 		result.setNumberOfSteps(steps.get());
 	    }
-	    
-	    
-	  /*  this.findNodeWithPosition(root.getChildNodes(), position).forEach( node ->{
-		AtomicInteger steps = new AtomicInteger(0);
-		StringBuilder sb = new StringBuilder();
-		Node parent = node;
-		while (parent.getParent() != null){
-		    steps.incrementAndGet();
-		    sb.insert(0, parent.getPosition().getLocation());
-		    parent = parent.getParent();
-		}
-		System.out.println(sb.toString());
-		result.addPath(sb.toString());
-		result.setNumberOfSteps(steps.get());
-	    });
-	    */
 	}
 	return result;
 
