@@ -8,25 +8,28 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.gm.jumper.exceptions.InputParseException;
 import br.com.gm.jumper.model.XYAxis;
 
 public class StringToCoordenateConverter {
 
     private final static String REGEX_PATTERN = "(-)?[0-9]+,+(-)?[0-9]+";
 
-    public static <T extends XYAxis> T convert(String parameter, Class<T> t){
+    public static <T extends XYAxis> T convert(String parameter, Class<T> t) throws InputParseException{
 	List<String> result = applyRegex(parameter);
-	if(applyRegex(parameter).size() >= 0)
-	    throw new RuntimeException();
+	if(result.size() != 1)
+	    throw new InputParseException(parameter);
 	return createXYAxis(t, result.get(0));
     }
 
-    public static <T extends XYAxis>  Set<T> convertToSet(String parameter, Class<T> t){
+    public static <T extends XYAxis>  Set<T> convertToSet(String parameter, Class<T> t) throws InputParseException{
 	Set<T> positionSet = new HashSet<T>();
 	applyRegex(parameter).forEach(result -> {
 	    positionSet.add(createXYAxis(t, result));
-	    
 	});
+	if(positionSet.isEmpty()){
+	    throw new InputParseException(parameter); 
+	}
 	return positionSet;
     }
 

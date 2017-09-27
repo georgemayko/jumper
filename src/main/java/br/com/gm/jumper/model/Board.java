@@ -21,7 +21,7 @@ public class Board {
     public Board(int size) throws BoardSizeException{
 	super();
 	if(size < minSize || size > maxSize)
-	    throw new BoardSizeException();
+	    throw new BoardSizeException(String.format("Board size should be betwen %d and %d", minSize, maxSize));
 	this.size = size;
 	this.xyAxisMap = new HashMap<XYAxis,BoardSquare>();
 	createXYAxisOfTheBoard();

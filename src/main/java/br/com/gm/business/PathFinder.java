@@ -37,7 +37,8 @@ public class PathFinder {
     public JumperTree findShortestPathJumperTree( Jumper jumper, Position endPosition, Board board) throws NoMovesException, JumperPositionInvalidException{
 	board.addJumper(jumper);
 	JumperTree tree = new JumperTree(new Node(jumper.getActualPosition()));
-	//return b(board, endPosition, Arrays.asList(jumper.getActualPosition()), tree);
+	if(!board.isValidPositionForMove(endPosition))
+	    return tree; 
 	return d(board, endPosition, jumper.getActualPosition());
     }
 
@@ -92,7 +93,7 @@ public class PathFinder {
 	    return treeCoordinator.getFullTree();
 	}else{
 	    System.out.println("More step:\t" +GregorianCalendar.getInstance().getTime());
-	    
+
 	    if(positions.size() <= endPosition.size()){
 		List<Position> positionsToProcess = getNewPositionsToProcess(board, positions, treeCoordinator.getHeader(),true);
 		return this.c(board, endPosition, positionsToProcess, treeCoordinator);
@@ -114,9 +115,9 @@ public class PathFinder {
 		positionsToProcess.add(newPosition);
 		tree.addNode(position, newPosition);
 		if(addStone){
-		try{
-		    board.addStone(new Stone(position.getXyAxis()));
-		} catch(InvalidPositionException e){ }
+		    try{
+			board.addStone(new Stone(position.getXyAxis()));
+		    } catch(InvalidPositionException e){ }
 		}
 	    });
 	});

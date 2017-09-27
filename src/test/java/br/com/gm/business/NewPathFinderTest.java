@@ -26,7 +26,6 @@ public class NewPathFinderTest {
 	horseChessMoves = new Move[]{new Move(1,2), new Move(2,1), new Move(1,-2), new Move(2,-1), new Move(-1,2), new Move(-2,1), new Move(-1,-2), new Move(-2,-1)};
     }
     
-    
     @Test
     public void mustReturnNumberOfStepsZeroWhenStartAndEndPositionAreTheSame() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
 	Board board = new Board(1);
@@ -52,7 +51,7 @@ public class NewPathFinderTest {
     }
     
     @Test
-    public void a() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
+    public void mustReturnTwoStepsAndTwoPathsForABoardWithSize4AndStartingIn4X4AndEnding1x1() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
 	Board board = new Board(4);
 	Jumper jumper = new Jumper(new Position(new XYAxis(4,4)), horseChessMoves);
 	board.addJumper(jumper);
@@ -63,7 +62,7 @@ public class NewPathFinderTest {
     }
     
     @Test
-    public void b() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
+    public void mustHaveThreePathsAndFiveSteps() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
 	Board board = new Board(8);
 	Jumper jumper = new Jumper(new Position(new XYAxis(1,8)), horseChessMoves);
 	board.addJumper(jumper);
@@ -85,7 +84,7 @@ public class NewPathFinderTest {
     
     
     @Test
-    public void c() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
+    public void mustNotHaveStepsAndPathWhenTheWayToEndIsBlockedByStones() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
 	Board board = new Board(3);
 	Jumper jumper = new Jumper(new Position(new XYAxis(1,1)), horseChessMoves);
 	board.addJumper(jumper);
@@ -99,17 +98,29 @@ public class NewPathFinderTest {
     
     
     
+//    @Test
+//    public void d() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
+//	Board board = new Board(20);
+//	Jumper jumper = new Jumper(new Position(new XYAxis(20,20)), horseChessMoves);
+//	board.addJumper(jumper);
+//	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
+//	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
+//	Assert.assertEquals(0, result.getNumberOfSteps());
+//	Assert.assertEquals(0, result.getNumberOfPaths());
+//    }
+    
+    
     @Test
-    public void d() throws BoardSizeException, NoMovesException, InvalidPositionException, InvalidMoveException, JumperPositionInvalidException{
-	Board board = new Board(20);
-	Jumper jumper = new Jumper(new Position(new XYAxis(20,20)), horseChessMoves);
+    public void mustNotHavePathAndStepsWhenEndPositionIsAStonePosition() throws BoardSizeException, NoMovesException, InvalidPositionException, JumperPositionInvalidException{
+	Board board = new Board(8);
+	Jumper jumper = new Jumper(new Position(new XYAxis(1,8)), horseChessMoves);
 	board.addJumper(jumper);
+	board.addStone(new Stone(new XYAxis(1, 1)));
 	JumperTree tree = new PathFinder().findShortestPathJumperTree(jumper, new Position(new XYAxis(1, 1)), board);
 	Result result = tree.getResult(new Position(new XYAxis(1, 1)));
 	Assert.assertEquals(0, result.getNumberOfSteps());
-	Assert.assertEquals(0, result.getNumberOfPaths());
+	Assert.assertEquals(0, result.getNumberOfPaths()); 
     }
-    
     
     
 }
