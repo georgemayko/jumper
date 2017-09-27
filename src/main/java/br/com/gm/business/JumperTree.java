@@ -1,7 +1,6 @@
 package br.com.gm.business;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -15,28 +14,35 @@ public class JumperTree {
 
     private Node root;
 
-    public JumperTree(Node root/*, Position endPosition*/) {
+    public JumperTree(Node root) {
 	super();
 	this.root = root;
-	//this.endPosition = endPosition;
     }
 
     public void addNode(Position positionParent, Position positionNode){
 	if(root.getPosition().equals(positionParent)){
 	    root.addChildNode(new Node(positionNode));
 	}else{
-	    List<Node> nodesParent = findNodeWithPosition(root.getChildNodes(), positionParent);
+	    Set<Node> nodesParent = findNodeWithPosition(root.getChildNodes(), positionParent);
+	    System.out.println("----Encontrado PAI"+ nodesParent.size());
 	    nodesParent.forEach(parent -> {
 		if( parent.getParent() != null &&
-			!parent.getParent().getPosition().equals(positionNode)){		    
+			!parent.getParent().getPosition().equals(positionNode)){
 		    parent.addChildNode(new Node(positionNode));
 		}
+		else{
+		    System.out.println("Não encontrado!");
+		    System.out.println(positionParent.getLocation());
+		    System.out.println(positionNode.getLocation());
+		    
+		}
+		
 	    });
 	}
     }
 
-    private List<Node> findNodeWithPosition(Set<Node> nodes, Position position){
-	List<Node> nodeList = nodes.stream().filter(node -> node.getPosition().equals(position)).collect(Collectors.toList());
+    protected Set<Node> findNodeWithPosition(Set<Node> nodes, Position position){
+	Set<Node> nodeList = nodes.stream().filter(node -> node.getPosition().equals(position)).collect(Collectors.toSet());
 	if(nodeList.isEmpty()){
 	    Set<Node> nodeToLookFor = new HashSet<Node>();
 	    nodes.forEach(node -> nodeToLookFor.addAll(node.getChildNodes()));
@@ -50,7 +56,22 @@ public class JumperTree {
     public Result getResult(Position position){
 	Result result = new Result();
 	if(!root.getChildNodes().isEmpty()){
-	    this.findNodeWithPosition(root.getChildNodes(), position).forEach( node ->{
+	    for (Node node : this.findNodeWithPosition(root.getChildNodes(), position)) {
+		AtomicInteger steps = new AtomicInteger(0);
+		StringBuilder sb = new StringBuilder();
+		Node parent = node;
+		while (parent.getParent() != null){
+		    steps.incrementAndGet();
+		    sb.insert(0, parent.getPosition().getLocation());
+		    parent = parent.getParent();
+		}
+		System.out.println(sb.toString());
+		result.addPath(sb.toString());
+		result.setNumberOfSteps(steps.get());
+	    }
+	    
+	    
+	  /*  this.findNodeWithPosition(root.getChildNodes(), position).forEach( node ->{
 		AtomicInteger steps = new AtomicInteger(0);
 		StringBuilder sb = new StringBuilder();
 		Node parent = node;
@@ -63,6 +84,7 @@ public class JumperTree {
 		result.addPath(sb.toString());
 		result.setNumberOfSteps(steps.get());
 	    });
+	    */
 	}
 	return result;
 

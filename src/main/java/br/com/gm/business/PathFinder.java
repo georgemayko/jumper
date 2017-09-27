@@ -2,12 +2,15 @@ package br.com.gm.business;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import br.com.gm.jumper.exceptions.InvalidPositionException;
 import br.com.gm.jumper.exceptions.JumperPositionInvalidException;
@@ -22,24 +25,25 @@ public class PathFinder {
     Queue<Step> startToEnd = new LinkedList<Step>();
     Queue<Step> endToStart = new LinkedList<Step>();
 
-//    public Result findShortestPath( Jumper jumper, Position endPosition, Board board) throws NoMovesException, JumperPositionInvalidException{
-//	Jumper endJumper = new Jumper(endPosition, jumper.getMoves().toArray( new Move[jumper.getMoves().size()]));
-//	board.addJumper(jumper);
-//	AtomicInteger numberOfSteps= new AtomicInteger(0);
-//	//return a(numberOfSteps, board, endPosition, Arrays.asList(jumper));
-//	return a(numberOfSteps, board, endPosition, Arrays.asList(jumper));
-//    }
+    //    public Result findShortestPath( Jumper jumper, Position endPosition, Board board) throws NoMovesException, JumperPositionInvalidException{
+    //	Jumper endJumper = new Jumper(endPosition, jumper.getMoves().toArray( new Move[jumper.getMoves().size()]));
+    //	board.addJumper(jumper);
+    //	AtomicInteger numberOfSteps= new AtomicInteger(0);
+    //	//return a(numberOfSteps, board, endPosition, Arrays.asList(jumper));
+    //	return a(numberOfSteps, board, endPosition, Arrays.asList(jumper));
+    //    }
 
 
     public JumperTree findShortestPathJumperTree( Jumper jumper, Position endPosition, Board board) throws NoMovesException, JumperPositionInvalidException{
 	board.addJumper(jumper);
 	JumperTree tree = new JumperTree(new Node(jumper.getActualPosition()));
-	return b(board, endPosition, Arrays.asList(jumper.getActualPosition()), tree);
+	//return b(board, endPosition, Arrays.asList(jumper.getActualPosition()), tree);
+	return d(board, endPosition, jumper.getActualPosition());
     }
 
 
 
-   /* private Result a (AtomicInteger numberOfSteps, Board board, Position endPosition, List<Jumper> jumpers){
+    /* private Result a (AtomicInteger numberOfSteps, Board board, Position endPosition, List<Jumper> jumpers){
 	numberOfSteps.incrementAndGet();
 	if(jumpers.stream().filter(j -> j.getActualPosition().equals(endPosition)).count() > 0){
 	    return new Result(numberOfSteps.get(), 0);
@@ -64,7 +68,60 @@ public class PathFinder {
 	    return new Result(numberOfSteps.get(), (int) jumperMatchedToEnd,"");
 	}
     }
-*/
+     */
+
+    private JumperTree d(Board board, Position endPosition, Position actualPosition) {
+	try{
+	    TreeCoordinator treeCoordinator = new TreeCoordinator(new JumperTree(new Node(actualPosition)), new JumperTree(new Node(endPosition)));
+	    return c(board, Arrays.asList(endPosition), Arrays.asList(actualPosition),treeCoordinator);
+	}catch(NoMovesException e){
+	    return new JumperTree(new Node(endPosition));
+	}
+    }
+
+
+
+    private JumperTree c (Board board, List<Position> endPosition, List<Position> positions, TreeCoordinator treeCoordinator) throws NoMovesException{
+	System.out.println("Start filter:("+positions.size()+")("+endPosition.size()+")\t" +GregorianCalendar.getInstance().getTime());
+	if( positions.isEmpty() || endPosition.isEmpty()){
+	    throw new NoMovesException();
+	}
+	if(!Collections.disjoint(positions, endPosition)){
+	    System.out.println("Start finished: \t" +GregorianCalendar.getInstance().getTime());
+	    treeCoordinator.joinTrees(CollectionUtils.intersection(positions, endPosition));
+	    return treeCoordinator.getFullTree();
+	}else{
+	    System.out.println("More step:\t" +GregorianCalendar.getInstance().getTime());
+	    
+	    if(positions.size() <= endPosition.size()){
+		List<Position> positionsToProcess = getNewPositionsToProcess(board, positions, treeCoordinator.getHeader(),true);
+		return this.c(board, endPosition, positionsToProcess, treeCoordinator);
+	    }
+	    else{
+		List<Position> positionsToProcess = getNewPositionsToProcess(board, endPosition, treeCoordinator.getTail(), false);
+		return this.c(board, positionsToProcess, positions, treeCoordinator);
+	    }
+	}
+    }
+
+
+
+    private List<Position> getNewPositionsToProcess(Board board, List<Position> positions, JumperTree tree, boolean addStone) {
+	Set<Position> positionsToProcess = new HashSet<Position>();
+	positions.forEach(position ->{
+	    new Jumper(position, board.getJumper()).getPossiblePositionMoves(board)
+	    .forEach(newPosition -> {
+		positionsToProcess.add(newPosition);
+		tree.addNode(position, newPosition);
+		if(addStone){
+		try{
+		    board.addStone(new Stone(position.getXyAxis()));
+		} catch(InvalidPositionException e){ }
+		}
+	    });
+	});
+	return new ArrayList<Position>(positionsToProcess);
+    }
 
     private JumperTree b (Board board, Position endPosition, List<Position> positions, JumperTree tree){
 	System.out.println("Start filter:("+positions.size()+")\t" +GregorianCalendar.getInstance().getTime());
